@@ -7,7 +7,14 @@
     <link rel="stylesheet" href="Sääsovellus.css" />
   </head>
   <body>
+  <div class = "background"></div>
     <script src="Sääsovellus.js"></script>
+
+
+
+    <!--Luodaan elementit/kontainerit, joita voidaan muokata css-osioissa-->
+    
+    
     <div class="card">
       <div class="search">
         <input type="text" placeholder="Valitse Kaupunki" spellcheck="false" />
@@ -15,6 +22,9 @@
         <button onclick="getCurrentLocation()"><img src="KUVIA/Point.png"></button>
       </div>
       <div class="weather">
+
+        <!-- Perus formaatti, jonka koodi ylikirjoittaa noudettuaan API:sta-->
+
         <img src="KUVIA/rain.png" class="weather-icon" />
         <h1 class="temp">22°c</h1>
         <h2 class="kaupunki">New York</h2>
@@ -37,6 +47,9 @@
       </div>
     </div>
     <script>
+
+      //käytetyn API, url + avain
+
       const apiKey = "f38f7eb98d775a523a6213cfd516a561";
       const apiUrl =
         "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
@@ -45,12 +58,13 @@
       const searchBtn = document.querySelector(".search button");
       const weatherIcon = document.querySelector(".weather-icon");
 
+      // Funktio, joka ylikirjoittaa formaatin tiedot API:n tiedoilla, sekä vaihtaa sää iconit yms.
+      
       async function checkWeather(city) {
         const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
         var data = await response.json();
 
         console.log(data);
-
         document.querySelector(".kaupunki").innerHTML = data.name;
         document.querySelector(".temp").innerHTML =
           Math.round(data.main.temp) + "°c";
@@ -59,20 +73,24 @@
         document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
 
         if (data.weather[0].main == "Clouds") {
-          weatherIcon.src = "KUVIA/cloudy.png";
+          weatherIcon.src = "KUVIA/clouds.png";
+          document.querySelector(".background").style.backgroundImage = "url(KUVIA/cloudygif.gif)";
         } else if (data.weather[0].main == "Clear") {
           weatherIcon.src = "KUVIA/clear.png";
+          document.querySelector(".background").style.backgroundImage = "url(KUVIA/cleargif.gif)";
         } else if (data.weather[0].main == "Rain") {
           weatherIcon.src = "KUVIA/rain.png";
+          document.querySelector(".background").style.backgroundImage = "url(KUVIA/raingif.gif)";
         } else if (data.weather[0].main == "Drizzle") {
           weatherIcon.src = "KUVIA/drizzle.png";
+          document.querySelector(".background").style.backgroundImage = "url(KUVIA/drizzlegif.gif)";
         } else if (data.weather[0].main == "Mist") {
           weatherIcon.src = "KUVIA/mist.png";
+          document.querySelector(".background").style.backgroundImage = "url(KUVIA/foggy-foggif.gif)";
         } else if (data.weather[0].main == "Snow") {
           weatherIcon.src = "KUVIA/Snow.png";
-        } else if (data.weather[0].main == "Rain") {
-          weatherIcon.src = "KUVIA/rain.png";
-        }
+          document.querySelector(".background").style.backgroundImage = "url(snowgif.gif)";
+        } 
 
         document.querySelector(".weather").style.display = "block";
       }
